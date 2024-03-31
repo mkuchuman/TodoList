@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <h1 class="mt-5">Todolist Service Home
+    <a href="{% url 'todolist_service:task-create' %}" class="btn btn-primary link-to-page">
+        Create
+    </a>
+  </h1>
+  <p>Welcome to the Best Todolist Ever!</p>
+
+  <div class="row mt-5">
+    {% for task in task_list %}
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ task.content }}</h5>
+          <p class="card-text">Created: {{ task.created }}</p>
+          <p class="card-text">Deadline: {{ task.deadline }}</p>
+          <p class="card-text">Status:
+            {% if task.is_done %}
+            <span class="badge badge-success">Done</span>
+                <a href="{% url "todolist_service:task-status-change" pk=task.id %}" class="btn btn-danger">Undo</a>
+            {% else %}
+            <span class="badge badge-danger">Not done</span>
+                <a href="{% url "todolist_service:task-status-change" pk=task.id %}" class="btn btn-primary">Complete</a>
+            {% endif %}
+          </p>
+            {% for tag in task.tag.all %}
+                <p class="card-text">Tags: {{ tag.name }}</p>
+            {% endfor %}
+          <a href="{% url "todolist_service:task-update" pk=task.id %}" class="btn btn-primary">Update</a>
+          <a href="{% url "todolist_service:task-delete" pk=task.id %}" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
