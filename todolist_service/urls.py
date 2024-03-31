@@ -5,11 +5,10 @@ from todolist_service.views import (
     TaskCreateView,
     TaskUpdateView,
     TaskDeleteView,
-    chang_stat,
     TagListView,
     TagCreateView,
     TagUpdateView,
-    TagDeleteView,
+    TagDeleteView, TaskChangeStatusView,
 )
 
 urlpatterns = [
@@ -19,7 +18,9 @@ urlpatterns = [
          TaskUpdateView.as_view(), name="task-update"),
     path("task/<int:pk>/delete/",
          TaskDeleteView.as_view(), name="task-delete"),
-    path("task/<int:pk>/change_stat/", chang_stat, name="task-status-change"),
+    path("task/<int:pk>/change_stat/",
+         TaskChangeStatusView.as_view(),
+         name="task-status-change"),
     path("tags/", TagListView.as_view(), name="tags"),
     path("tags/create/", TagCreateView.as_view(), name="tags-create"),
     path("tags/<int:pk>/update/", TagUpdateView.as_view(), name="tags-update"),

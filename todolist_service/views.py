@@ -31,11 +31,20 @@ class TaskDeleteView(DeleteView):
     template_name = "todolist/confirmation.html"
 
 
-def chang_stat(request, pk):
-    task = get_object_or_404(Task, pk=pk)
-    task.is_done = not task.is_done
-    task.save()
-    return redirect("todolist_service:index")
+class TaskChangeStatusView(UpdateView):
+    model = Task
+    fields = []
+    template_name = "todolist/form.html"
+    success_url = reverse_lazy("todolist_service:index")
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Task, pk=self.kwargs.get('pk'))
+
+    def form_valid(self, form):
+        task = form.save(commit=False)
+        task.is_done = not task.is_done
+        task.save()
+        return super().form_valid(form)
 
 
 class TagListView(ListView):
